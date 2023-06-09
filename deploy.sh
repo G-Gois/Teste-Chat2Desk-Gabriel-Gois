@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variáveis de ambiente
-KUBECONFIG_PATH="/path/to/your/kubeconfig"
+KUBECONFIG_PATH=".\Cluster-Kubernetes\kubernetes\Kubeconfig.yaml"
 K8S_NAMESPACE="your-namespace"
 DEPLOYMENT_NAME="your-deployment"
 IMAGE_NAME="your-image-name"
