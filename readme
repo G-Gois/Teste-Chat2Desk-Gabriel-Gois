@@ -1,0 +1,94 @@
+# Microserviço Node.js e Cluster Kubernetes
+
+Este repositório contém um microserviço Node.js simples que interage com PostgreSQL, MongoDB, Redis e RabbitMQ para realizar operações CRUD básicas. Além disso, oferece a infraestrutura de um Cluster Kubernetes utilizando IaC (Infrastructure as Code) com as ferramentas Terraform e Ansible para implantação na nuvem (Linode ou DigitalOcean). O projeto também inclui um pipeline de CI/CD configurado no GitLab para automatizar a integração contínua e a implantação contínua do microserviço.
+
+## Pré-requisitos
+
+Antes de executar o microserviço e implantar o Cluster Kubernetes, certifique-se de ter os seguintes pré-requisitos instalados e configurados:
+
+- Docker
+- Terraform
+- Ansible
+- Kubectl (cliente Kubernetes)
+
+## Configuração do Microserviço
+
+Siga as etapas abaixo para configurar e executar o microserviço:
+
+1. Clone este repositório para o seu ambiente local:
+   ```
+   git clone https://github.com/G-Gois/Teste-Chat2Desk-Gabriel-Gois.git
+   cd Teste-Chat2Desk-Gabriel-Gois
+/msNode/
+   ```
+
+2. No arquivo `db.js`, forneça as configurações corretas para cada banco de dados (PostgreSQL, MongoDB, Redis) substituindo as informações de conexão, como host, porta, nome do banco de dados, usuário e senha.
+
+3. Instale as dependências do projeto executando o seguinte comando:
+   ```
+   npm install
+   ```
+
+4. Execute o microserviço com o seguinte comando:
+   ```
+   npm start
+   ```
+
+5. O microserviço estará em execução na porta 3000. Você pode acessar os endpoints definidos em `routes.js` para realizar operações CRUD nos bancos de dados.
+
+## Implantação do Cluster Kubernetes
+
+Siga as etapas abaixo para implantar o Cluster Kubernetes utilizando IaC:
+
+1. No diretório `cluster-kubernetes`, atualize o arquivo `terraform.tfvars` com as suas próprias configurações, como token da nuvem, região, tamanho das instâncias, etc.
+
+2. No diretório `cluster-kubernetes`, execute os seguintes comandos para criar e configurar o Cluster Kubernetes:
+   ```
+   terraform init
+   terraform apply
+   ```
+
+3. Após a conclusão bem-sucedida do provisionamento do Cluster Kubernetes, você receberá informações sobre o cluster, como endereço do cluster e credenciais para acesso ao cluster.
+
+4. Configure o acesso ao Cluster Kubernetes localmente executando o seguinte comando:
+   ```
+   terraform output kubeconfig > ~/.kube/config
+   ```
+
+5. Verifique se você pode acessar o cluster com o seguinte comando:
+   ```
+   kubectl get nodes
+   ```
+
+6. Agora, você pode implantar o microserviço no Cluster Kubernetes utilizando o arquivo de manifesto `deployment.yaml` fornecido neste repositório. Certifique-se de atualizar as configurações de implantação no arquivo conforme necessário.
+
+7. Execute o seguinte comando para implantar o microserviço no cluster:
+   ```
+   kubectl apply -f deployment.yaml
+   ```
+
+8. Após a implantação bem-sucedida, você pode acessar o microserviço dentro do cluster usando o serviço Kubernetes.
+
+## Integração CI/CD com o GitLab
+
+O pipeline de CI/CD configurado no GitLab automatiza a integração contínua e a implantação contínua do microserviço. O arquivo `.gitlab-ci.yml` define as etapas do pipeline, como compilação, testes e implantação, permitindo que as alterações no código sejam testadas e implantadas automaticamente.
+
+Ao fazer um push para o branch `master` no GitLab, o pipeline de CI/CD será acionado. As etapas de build, testes e implantação serão executadas de acordo com o arquivo `.gitlab-ci.yml`, garantindo a entrega contínua do microserviço.
+
+Certifique-se de configurar corretamente as variáveis de ambiente no GitLab para fornecer as credenciais necessárias, como tokens de acesso a serviços externos ou outras informações sensíveis. Isso garante que as informações confidenciais sejam protegidas e não sejam expostas em seu pipeline de CI/CD.
+
+
+## Considerações de Design
+
+- Durante o desenvolvimento deste projeto, foram consideradas as práticas de SRE (Site Reliability Engineering) para garantir a confiabilidade, escalabilidade e disponibilidade do microserviço e do Cluster Kubernetes.
+
+- Uso de IaC com Terraform e Ansible: A infraestrutura do Cluster Kubernetes é definida como código, permitindo a criação e configuração automatizada do cluster. Isso facilita a manutenção, o versionamento e a reprodução consistente do ambiente.
+
+- Separação em camadas: O microserviço Node.js segue uma arquitetura de camadas com rotas, controle e acesso aos bancos de dados devidamente separados. Essa separação facilita a manutenção, a depuração e a evolução do código.
+
+
+## Conclusão
+
+Este projeto foi desenvolvido como parte de um teste técnico para uma vaga de SRE na empresa Chat2Desk. Ele apresenta um microserviço Node.js com integração de bancos de dados PostgreSQL, MongoDB, Redis e RabbitMQ, juntamente com um Cluster Kubernetes para implantação do microserviço na nuvem, com configuração de Auto Scaling, permitindo que o cluster dimensione automaticamente o número de réplicas do microserviço com base na demanda de tráfego escalando horizontalmente quando necessário. Além disso, foi configurado um pipeline de CI/CD no GitLab para automatizar a integração contínua.
+
+Esse projeto demonstra habilidades e conhecimentos em áreas como gerenciamento de infraestrutura, desenvolvimento de microserviços, integração de bancos de dados e práticas de SRE. Espero que esse projeto seja útil e atenda aos requisitos do teste técnico. Se você tiver alguma dúvida adicional, sinta-se à vontade para perguntar.

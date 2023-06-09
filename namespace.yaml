@@ -1,0 +1,4 @@
+apiVersion: v1
+kind: MsNodejs
+metadata:
+  name: microservice-MsNodejs

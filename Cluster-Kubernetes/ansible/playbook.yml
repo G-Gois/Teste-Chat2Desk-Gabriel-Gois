@@ -1,0 +1,66 @@
+- name: Configure Kubernetes Cluster
+  hosts: all
+  become: true
+  tasks:
+    - name: Install dependencies
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+      update_cache: yes
+
+    - name: Install Docker
+      include_role:
+        name: geerlingguy.docker
+
+    - name: Install Kubernetes packages
+      apt:
+        pkg:
+          - kubelet
+          - kubeadm
+          - kubectl
+      update_cache: yes
+
+    - name: Initialize Kubernetes
+      shell: kubeadm init --pod-network-cidr=10.244.0.0/16
+      args:
+        creates: /etc/kubernetes/admin.conf
+
+    - name: Set up kubeconfig for user
+      block:
+        - name: Create .kube directory
+          file:
+            path: "/home/{{ ansible_user }}/.kube"
+            state: directory
+
+        - name: Copy admin.conf to user's kubeconfig
+          copy:
+            src: /etc/kubernetes/admin.conf
+            dest: "/home/{{ ansible_user }}/.kube/config"
+            owner: "{{ ansible_user }}"
+            group: "{{ ansible_user }}"
+
+    - name: Install Flannel
+      shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+      args:
+        chdir: "/home/{{ ansible_user }}"
+
+    - name: Deploy Microservice
+      shell: kubectl apply -f /path/to/your/microservice-deployment.yaml
+      args:
+        chdir: "/home/{{ ansible_user }}"
+
+    - name: Install metrics-server
+      become: true
+      shell: kubectl apply -f /path/to/your/metrics-server.yaml
+      args:
+        chdir: "/home/{{ ansible_user }}"
+
+    - name: Apply HPA configuration
+      shell: |
+        kubectl autoscale deployment microservice-deployment --cpu-percent=80 --min=2 --max=5
+      args:
+        chdir: "/home/{{ ansible_user }}"
