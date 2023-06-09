@@ -69,6 +69,8 @@ Siga as etapas abaixo para implantar o Cluster Kubernetes utilizando IaC:
 
 8. Após a implantação bem-sucedida, você pode acessar o microserviço dentro do cluster usando o serviço Kubernetes.
 
+**LEMBRE-SE DE CONFIGURAR O ARQUIVO KUBECONFIG.YAML NA PASTA KUBERNETES***
+
 ## Integração CI/CD com o GitLab
 
 O pipeline de CI/CD configurado no GitLab automatiza a integração contínua e a implantação contínua do microserviço. O arquivo `.gitlab-ci.yml` define as etapas do pipeline, como compilação, testes e implantação, permitindo que as alterações no código sejam testadas e implantadas automaticamente.
