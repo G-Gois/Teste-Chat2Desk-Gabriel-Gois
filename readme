@@ -69,7 +69,7 @@ Siga as etapas abaixo para implantar o Cluster Kubernetes utilizando IaC:
 
 8. Após a implantação bem-sucedida, você pode acessar o microserviço dentro do cluster usando o serviço Kubernetes.
 
-**LEMBRE-SE DE CONFIGURAR O ARQUIVO KUBECONFIG.YAML NA PASTA KUBERNETES***
+**LEMBRE-SE DE CONFIGURAR O ARQUIVO KUBECONFIG.YAML NA PASTA KUBERNETES**
 
 ## Integração CI/CD com o GitLab
 
